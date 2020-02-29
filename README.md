@@ -4,18 +4,18 @@
 Files/Directories  
 ----------------------------
 
-> lib <
+> lib
 
 The lib directory contains the ANTLR library files in antlr-4.7-complete.jar. 
   
-> src < 
+> src
 
 The src directory contains all source code for the compiler and its tests.
 
-> compile <
+> compile
 
 The compile script provides a frontend interface of the WACC compiler.
 
-> Makefile <
+> Makefile
 
 Running 'make' in the root directory builds the compiler.
