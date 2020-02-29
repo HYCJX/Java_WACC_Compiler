@@ -4,10 +4,6 @@
 Files/Directories  
 ----------------------------
 
-> lib
-
-The lib directory contains the ANTLR library files in antlr-4.7-complete.jar. 
-  
 > src
 
 The src directory contains all source code for the compiler and its tests.
