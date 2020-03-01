@@ -1,5 +1,9 @@
 package types;
 
+import symbol_table.NodeToken;
+
+import static types.TypeToken.PAIR;
+
 public class PairType implements Type {
 
   private final Type first;
@@ -16,6 +20,11 @@ public class PairType implements Type {
 
   public Type getSecond() {
     return second;
+  }
+
+  @Override
+  public NodeToken getNodeToken() {
+    return PAIR;
   }
 
   @Override
@@ -42,6 +51,6 @@ public class PairType implements Type {
 
   @Override
   public int hashCode() {
-    return TypeToken.PAIR.ordinal() + first.hashCode() + second.hashCode();
+    return PAIR.ordinal() + first.hashCode() + second.hashCode();
   }
 }

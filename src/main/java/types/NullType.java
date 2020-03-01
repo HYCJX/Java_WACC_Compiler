@@ -1,6 +1,6 @@
 package types;
 
-/* Pair literals */
+/* Pair literals: 'null' */
 
 public class NullType extends BaseType {
 

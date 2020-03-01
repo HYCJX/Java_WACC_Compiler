@@ -2,10 +2,12 @@ package types;
 
 /* Generic type for nested pair elements: 'pair' */
 
+import static types.TypeToken.ANY;
+
 public final class AnyType extends BaseType {
 
   public AnyType() {
-    super(TypeToken.ANY);
+    super(ANY);
   }
 
   // Should not be called for this type:

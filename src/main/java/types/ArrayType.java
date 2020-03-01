@@ -1,5 +1,9 @@
 package types;
 
+import symbol_table.NodeToken;
+
+import static types.TypeToken.ARRAY;
+
 public class ArrayType implements Type {
 
   private final Type elemType;
@@ -20,6 +24,11 @@ public class ArrayType implements Type {
       typeAST = ((ArrayType) typeAST).getElemType();
     }
     return dimension;
+  }
+
+  @Override
+  public NodeToken getNodeToken() {
+    return ARRAY;
   }
 
   @Override
@@ -49,6 +58,6 @@ public class ArrayType implements Type {
 
   @Override
   public int hashCode() {
-    return TypeToken.ARRAY.ordinal() + elemType.hashCode();
+    return ARRAY.ordinal() + elemType.hashCode();
   }
 }

@@ -1,8 +1,17 @@
 package types;
 
+import symbol_table.NodeToken;
+
+import static types.TypeToken.STRING;
+
 public class StringType implements Type {
 
   public StringType() {}
+
+  @Override
+  public NodeToken getNodeToken() {
+    return STRING;
+  }
 
   @Override
   public int getOffset() {
@@ -24,6 +33,6 @@ public class StringType implements Type {
 
   @Override
   public int hashCode() {
-    return TypeToken.STRING.ordinal();
+    return STRING.ordinal();
   }
 }
