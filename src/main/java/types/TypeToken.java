@@ -2,9 +2,8 @@ package types;
 
 /* Identify type classes */
 
-import symbol_table.NodeToken;
-
-public enum TypeToken implements NodeToken {
+public enum TypeToken {
+  FUNCTION,
   ANY,
   ARRAY,
   BOOL,

@@ -1,10 +1,8 @@
 package types;
 
-import symbol_table.NodeToken;
-
 import static types.TypeToken.PAIR;
 
-public class PairType implements Type {
+public final class PairType implements Type {
 
   private final Type first;
   private final Type second;
@@ -23,7 +21,7 @@ public class PairType implements Type {
   }
 
   @Override
-  public NodeToken getNodeToken() {
+  public TypeToken getTypeToken() {
     return PAIR;
   }
 

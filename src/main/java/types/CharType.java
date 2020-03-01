@@ -1,6 +1,6 @@
 package types;
 
-public class CharType extends BaseType {
+public final class CharType extends BaseType {
 
   public CharType() {
     super(TypeToken.CHAR);

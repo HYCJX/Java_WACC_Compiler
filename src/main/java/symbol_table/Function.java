@@ -1,13 +1,15 @@
 package symbol_table;
 
-import static symbol_table.FunctionToken.FUNCTION;
+import types.TypeToken;
 
-public class Function implements Node {
+import static types.TypeToken.FUNCTION;
+
+public final class Function implements Node {
 
   public Function() {}
 
   @Override
-  public NodeToken getNodeToken() {
+  public TypeToken getTypeToken() {
     return FUNCTION;
   }
 

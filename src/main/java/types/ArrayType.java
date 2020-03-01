@@ -1,10 +1,8 @@
 package types;
 
-import symbol_table.NodeToken;
-
 import static types.TypeToken.ARRAY;
 
-public class ArrayType implements Type {
+public final class ArrayType implements Type {
 
   private final Type elemType;
 
@@ -27,7 +25,7 @@ public class ArrayType implements Type {
   }
 
   @Override
-  public NodeToken getNodeToken() {
+  public TypeToken getTypeToken() {
     return ARRAY;
   }
 

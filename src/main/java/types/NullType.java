@@ -2,7 +2,7 @@ package types;
 
 /* Pair literals: 'null' */
 
-public class NullType extends BaseType {
+public final class NullType extends BaseType {
 
   public NullType() {
     super(TypeToken.NULL);

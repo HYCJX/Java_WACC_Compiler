@@ -1,15 +1,13 @@
 package types;
 
-import symbol_table.NodeToken;
-
 import static types.TypeToken.STRING;
 
-public class StringType implements Type {
+public final class StringType implements Type {
 
   public StringType() {}
 
   @Override
-  public NodeToken getNodeToken() {
+  public TypeToken getTypeToken() {
     return STRING;
   }
 

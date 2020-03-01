@@ -1,6 +1,6 @@
 package types;
 
-public class IntType extends BaseType {
+public final class IntType extends BaseType {
 
   public IntType() {
     super(TypeToken.INT);
