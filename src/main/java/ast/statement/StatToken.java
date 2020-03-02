@@ -1,5 +1,7 @@
 package ast.statement;
 
+/* Statement types */
+
 public enum StatToken {
   ASSIGN,
   BLOCK,
