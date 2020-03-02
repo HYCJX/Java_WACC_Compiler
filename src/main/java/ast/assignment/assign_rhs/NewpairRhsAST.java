@@ -2,13 +2,13 @@ package ast.assignment.assign_rhs;
 
 import ast.expression.ExprAST;
 
-public class NewpairRhsAST implements AssignRhsAST {
+public final class NewpairRhsAST implements AssignRhsAST {
 
   private final ExprAST first;
   private final ExprAST second;
   private final int line;
   private final int charPosition;
-//  private Type type;
+  //  private Type type;
 
   public NewpairRhsAST(ExprAST first, ExprAST second, int line, int charPosition) {
     this.first = first;

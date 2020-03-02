@@ -4,7 +4,7 @@ import ast.expression.ExprAST;
 
 import java.util.List;
 
-public class ArraylitRhsAST implements AssignRhsAST {
+public final class ArraylitRhsAST implements AssignRhsAST {
 
   private final int line;
   private final int charPosition;

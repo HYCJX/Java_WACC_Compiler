@@ -1,10 +1,11 @@
 package ast.assignment.assign_rhs;
 
 import ast.expression.ExprAST;
+import ast.mixed.IdentifierLeaf;
 
 import java.util.List;
 
-public class CallRhsAST implements AssignRhsAST {
+public final class CallRhsAST implements AssignRhsAST {
 
   private final IdentifierLeaf identifier;
   private final int line;
