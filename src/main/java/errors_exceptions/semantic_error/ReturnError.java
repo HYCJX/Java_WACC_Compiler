@@ -27,4 +27,24 @@ public class ReturnError extends SemanticError {
   public TypeToken getActual() {
     return actual;
   }
+
+  @Override
+  public String print() {
+    if (expected == null) {
+      return "Semantic Error at "
+          + getLine()
+          + ":"
+          + getPosition()
+          + " -- Cannot return from the global scope";
+    }
+    return "Semantic Error at "
+        + getLine()
+        + ":"
+        + getPosition()
+        + " -- Wrong return type. Expected: "
+        + expected
+        + ", Actual: "
+        + actual
+        + ".\n";
+  }
 }

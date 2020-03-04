@@ -14,18 +14,15 @@ public abstract class SemanticError implements Error {
     this.position = position;
   }
 
-  @Override
-  public String getOffendingToken() {
+  protected String getOffendingToken() {
     return offendingToken;
   }
 
-  @Override
-  public int getLine() {
+  protected int getLine() {
     return line;
   }
 
-  @Override
-  public int getPosition() {
+  protected int getPosition() {
     return position;
   }
 }

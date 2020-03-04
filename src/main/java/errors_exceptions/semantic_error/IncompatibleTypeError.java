@@ -25,4 +25,19 @@ public class IncompatibleTypeError extends SemanticError {
   public TypeToken getActual() {
     return actual;
   }
+
+  @Override
+  public String print() {
+    return "SemanticError at "
+        + getLine()
+        + ":"
+        + getPosition()
+        + " -- Incompatible type at \""
+        + getOffendingToken()
+        + "\" (expected: "
+        + getExpected()
+        + ", actual: "
+        + getActual()
+        + ").\n";
+  }
 }
