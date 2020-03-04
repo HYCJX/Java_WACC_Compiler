@@ -15,7 +15,7 @@ public final class ReadStatAST implements StatAST {
   }
 
   @Override
-  public StatToken getStatType() {
+  public StatToken getStatToken() {
     return StatToken.READ;
   }
 

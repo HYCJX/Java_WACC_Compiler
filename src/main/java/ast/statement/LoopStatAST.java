@@ -30,7 +30,7 @@ public final class LoopStatAST implements StatAST {
   }
 
   @Override
-  public StatToken getStatType() {
+  public StatToken getStatToken() {
     return StatToken.LOOP;
   }
 

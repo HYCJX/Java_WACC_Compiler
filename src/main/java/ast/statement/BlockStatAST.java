@@ -23,7 +23,7 @@ public final class BlockStatAST implements StatAST {
   }
 
   @Override
-  public StatToken getStatType() {
+  public StatToken getStatToken() {
     return StatToken.BLOCK;
   }
 

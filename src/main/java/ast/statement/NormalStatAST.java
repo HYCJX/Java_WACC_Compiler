@@ -21,7 +21,7 @@ public final class NormalStatAST implements StatAST {
   }
 
   @Override
-  public StatToken getStatType() {
+  public StatToken getStatToken() {
     return StatToken.NORMAL;
   }
 

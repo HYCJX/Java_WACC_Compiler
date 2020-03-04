@@ -3,7 +3,7 @@ package ast.statement;
 public final class SkipStatLeaf implements StatAST {
 
   @Override
-  public StatToken getStatType() {
+  public StatToken getStatToken() {
     return StatToken.SKIP;
   }
 

@@ -47,7 +47,7 @@ public final class ConditionStatAST implements StatAST {
   }
 
   @Override
-  public StatToken getStatType() {
+  public StatToken getStatToken() {
     return StatToken.CONDITION;
   }
 

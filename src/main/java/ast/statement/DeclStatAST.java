@@ -29,7 +29,7 @@ public final class DeclStatAST implements StatAST {
   }
 
   @Override
-  public StatToken getStatType() {
+  public StatToken getStatToken() {
     return StatToken.DECLARATION;
   }
 
