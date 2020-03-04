@@ -2,7 +2,7 @@ package errors_exceptions.semantic_error;
 
 import types.TypeToken;
 
-public class IncompatibleTypeError extends SemanticError {
+public final class IncompatibleTypeError extends SemanticError {
 
   private final TypeToken expected;
   private final TypeToken actual;

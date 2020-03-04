@@ -1,6 +1,6 @@
 package errors_exceptions.semantic_error;
 
-public class FunctionParamNumError extends SemanticError {
+public final class FunctionParamNumError extends SemanticError {
 
   private final int expected;
   private final int actual;
