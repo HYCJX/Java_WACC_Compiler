@@ -14,4 +14,9 @@ public abstract class BaseType implements Type {
   public TypeToken getTypeToken() {
     return type;
   }
+
+  @Override
+  public String print() {
+    return String.valueOf(type);
+  }
 }

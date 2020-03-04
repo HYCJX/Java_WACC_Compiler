@@ -1,6 +1,6 @@
 package ast.expression;
 
-public class UnopExprAST implements ExprAST {
+public final class UnopExprAST implements ExprAST {
 
   private final UnopToken operator;
   private final ExprAST expression;

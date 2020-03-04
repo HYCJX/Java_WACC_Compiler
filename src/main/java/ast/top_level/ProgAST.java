@@ -9,13 +9,13 @@ import java.util.List;
 
 public final class ProgAST implements AST {
 
+  private final List<FuncAST> functions = new ArrayList<>();
   private final List<StatAST> statements;
-  private List<FuncAST> functions = new ArrayList<>();
-  private SymbolTable symbolTable;
+  private final SymbolTable symbolTable;
 
-  public ProgAST(List<StatAST> statements, List<FuncAST> functions, SymbolTable symbolTable) {
-    this.statements = statements;
+  public ProgAST(List<FuncAST> functions, List<StatAST> statements, SymbolTable symbolTable) {
     this.functions.addAll(functions);
+    this.statements = statements;
     this.symbolTable = symbolTable;
   }
 

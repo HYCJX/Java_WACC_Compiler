@@ -35,6 +35,11 @@ public final class ArrayType implements Type {
   }
 
   @Override
+  public String print() {
+    return elemType.print() + "[]";
+  }
+
+  @Override
   public String toString() {
     if (elemType == null) {
       return "Some Array Type";

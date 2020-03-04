@@ -17,6 +17,11 @@ public final class StringType implements Type {
   }
 
   @Override
+  public String print() {
+    return String.valueOf(TypeToken.STRING);
+  }
+
+  @Override
   public String toString() {
     return "String type";
   }

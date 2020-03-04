@@ -31,6 +31,11 @@ public final class PairType implements Type {
   }
 
   @Override
+  public String print() {
+    return "pair(" + first.print() + ", " + second.print() + ")";
+  }
+
+  @Override
   public String toString() {
     return "Pair(" + (first == null ? "" : first) + " " + (second == null ? "" : second) + ")";
   }
