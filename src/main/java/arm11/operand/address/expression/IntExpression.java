@@ -2,7 +2,7 @@ package arm11.operand.address.expression;
 
 import arm11.operand.address.Address;
 
-public class IntExpression implements Address {
+public final class IntExpression implements Address {
 
   private final int num;
 

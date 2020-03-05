@@ -25,6 +25,7 @@ public final class Shift {
 
   public String print() {
     String start = shiftType.toString();
+    assert offsetIntImmValue != null || rs != null;
     if (offsetIntImmValue != null) {
       return start + " " + offsetIntImmValue.print();
     } else {

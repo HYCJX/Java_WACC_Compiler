@@ -5,7 +5,7 @@ import arm11.operand.snd_operand.imm_value.IntImmValue;
 import arm11.operand.snd_operand.register.Register;
 import arm11.operand.snd_operand.register.shifted_register.ShiftType;
 
-public class PostIndex extends AbstractAddress {
+public final class PostIndex extends AbstractAddress {
 
   public PostIndex(Register first) {
     super(first);

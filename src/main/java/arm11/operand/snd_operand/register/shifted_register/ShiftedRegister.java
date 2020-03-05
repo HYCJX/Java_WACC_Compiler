@@ -3,7 +3,7 @@ package arm11.operand.snd_operand.register.shifted_register;
 import arm11.operand.snd_operand.SndOperand;
 import arm11.operand.snd_operand.register.Register;
 
-public class ShiftedRegister implements SndOperand {
+public final class ShiftedRegister implements SndOperand {
 
   private final Register rm;
   private final Shift shift;
