@@ -28,13 +28,14 @@ public class WaccParser extends Parser {
 		CHAR_LITER=44, STR_LITER=45, IDENT=46, COMMENT=47, WS=48;
 	public static final int
 		RULE_prog = 0, RULE_func = 1, RULE_param = 2, RULE_stat = 3, RULE_assignLhs = 4, 
-		RULE_assignRhs = 5, RULE_expr = 6, RULE_type = 7, RULE_baseType = 8, RULE_arrayType = 9, 
-		RULE_pairType = 10, RULE_pairElemType = 11, RULE_arrayElem = 12, RULE_ident = 13, 
-		RULE_pairFst = 14, RULE_pairSnd = 15;
+		RULE_assignRhs = 5, RULE_arrayLiter = 6, RULE_call = 7, RULE_newpair = 8, 
+		RULE_expr = 9, RULE_type = 10, RULE_baseType = 11, RULE_arrayType = 12, 
+		RULE_pairType = 13, RULE_pairElemType = 14, RULE_arrayElem = 15, RULE_ident = 16, 
+		RULE_pairFst = 17, RULE_pairSnd = 18;
 	public static final String[] ruleNames = {
-		"prog", "func", "param", "stat", "assignLhs", "assignRhs", "expr", "type", 
-		"baseType", "arrayType", "pairType", "pairElemType", "arrayElem", "ident", 
-		"pairFst", "pairSnd"
+		"prog", "func", "param", "stat", "assignLhs", "assignRhs", "arrayLiter", 
+		"call", "newpair", "expr", "type", "baseType", "arrayType", "pairType", 
+		"pairElemType", "arrayElem", "ident", "pairFst", "pairSnd"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -133,29 +134,29 @@ public class WaccParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(32);
+			setState(38);
 			match(BEGIN);
-			setState(36);
+			setState(42);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(33);
+					setState(39);
 					func();
 					}
 					} 
 				}
-				setState(38);
+				setState(44);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 			}
-			setState(39);
+			setState(45);
 			stat(0);
-			setState(40);
+			setState(46);
 			match(END);
-			setState(41);
+			setState(47);
 			match(EOF);
 			}
 		}
@@ -212,45 +213,45 @@ public class WaccParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(43);
+			setState(49);
 			type();
-			setState(44);
+			setState(50);
 			ident();
-			setState(45);
+			setState(51);
 			match(OPEN_PARENTHESES);
-			setState(54);
+			setState(60);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==BASE_TYPE || _la==PAIR) {
 				{
-				setState(46);
+				setState(52);
 				param();
-				setState(51);
+				setState(57);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(47);
+					setState(53);
 					match(COMMA);
-					setState(48);
+					setState(54);
 					param();
 					}
 					}
-					setState(53);
+					setState(59);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(56);
+			setState(62);
 			match(CLOSE_PARENTHESES);
-			setState(57);
+			setState(63);
 			match(IS);
-			setState(58);
+			setState(64);
 			stat(0);
-			setState(59);
+			setState(65);
 			match(END);
 			}
 		}
@@ -289,9 +290,9 @@ public class WaccParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(61);
+			setState(67);
 			type();
-			setState(62);
+			setState(68);
 			ident();
 			}
 		}
@@ -513,7 +514,7 @@ public class WaccParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(105);
+			setState(111);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case SKIPS:
@@ -522,8 +523,24 @@ public class WaccParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(65);
+				setState(71);
 				match(SKIPS);
+				}
+				break;
+			case BASE_TYPE:
+			case PAIR:
+				{
+				_localctx = new StatInitVarContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(72);
+				type();
+				setState(73);
+				ident();
+				setState(74);
+				match(ASSIGN);
+				setState(75);
+				assignRhs();
 				}
 				break;
 			case FST:
@@ -533,27 +550,11 @@ public class WaccParser extends Parser {
 				_localctx = new StatAssignVarContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(66);
+				setState(77);
 				assignLhs();
-				setState(67);
+				setState(78);
 				match(ASSIGN);
-				setState(68);
-				assignRhs();
-				}
-				break;
-			case BASE_TYPE:
-			case PAIR:
-				{
-				_localctx = new StatInitVarContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(70);
-				type();
-				setState(71);
-				ident();
-				setState(72);
-				match(ASSIGN);
-				setState(73);
+				setState(79);
 				assignRhs();
 				}
 				break;
@@ -562,9 +563,9 @@ public class WaccParser extends Parser {
 				_localctx = new StatExitContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(75);
+				setState(81);
 				match(EXIT);
-				setState(76);
+				setState(82);
 				expr(0);
 				}
 				break;
@@ -573,9 +574,9 @@ public class WaccParser extends Parser {
 				_localctx = new StatFreeContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(77);
+				setState(83);
 				match(FREE);
-				setState(78);
+				setState(84);
 				expr(0);
 				}
 				break;
@@ -584,9 +585,9 @@ public class WaccParser extends Parser {
 				_localctx = new StatPrintContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(79);
+				setState(85);
 				match(PRINT);
-				setState(80);
+				setState(86);
 				expr(0);
 				}
 				break;
@@ -595,9 +596,9 @@ public class WaccParser extends Parser {
 				_localctx = new StatPrintlnContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(81);
+				setState(87);
 				match(PRINTLN);
-				setState(82);
+				setState(88);
 				expr(0);
 				}
 				break;
@@ -606,9 +607,9 @@ public class WaccParser extends Parser {
 				_localctx = new StatReturnContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(83);
+				setState(89);
 				match(RETURN);
-				setState(84);
+				setState(90);
 				expr(0);
 				}
 				break;
@@ -617,9 +618,9 @@ public class WaccParser extends Parser {
 				_localctx = new StatReadContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(85);
+				setState(91);
 				match(READ);
-				setState(86);
+				setState(92);
 				assignLhs();
 				}
 				break;
@@ -628,11 +629,11 @@ public class WaccParser extends Parser {
 				_localctx = new StatBeginContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(87);
+				setState(93);
 				match(BEGIN);
-				setState(88);
+				setState(94);
 				stat(0);
-				setState(89);
+				setState(95);
 				match(END);
 				}
 				break;
@@ -641,19 +642,19 @@ public class WaccParser extends Parser {
 				_localctx = new StatCondContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(91);
-				match(IF);
-				setState(92);
-				expr(0);
-				setState(93);
-				match(THEN);
-				setState(94);
-				stat(0);
-				setState(95);
-				match(ELSE);
-				setState(96);
-				stat(0);
 				setState(97);
+				match(IF);
+				setState(98);
+				expr(0);
+				setState(99);
+				match(THEN);
+				setState(100);
+				stat(0);
+				setState(101);
+				match(ELSE);
+				setState(102);
+				stat(0);
+				setState(103);
 				match(FI);
 				}
 				break;
@@ -662,15 +663,15 @@ public class WaccParser extends Parser {
 				_localctx = new StatLoopContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(99);
+				setState(105);
 				match(WHILE);
-				setState(100);
+				setState(106);
 				expr(0);
-				setState(101);
+				setState(107);
 				match(DO);
-				setState(102);
+				setState(108);
 				stat(0);
-				setState(103);
+				setState(109);
 				match(DONE);
 				}
 				break;
@@ -678,7 +679,7 @@ public class WaccParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(112);
+			setState(118);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -689,16 +690,16 @@ public class WaccParser extends Parser {
 					{
 					_localctx = new StatComposeContext(new StatContext(_parentctx, _parentState));
 					pushNewRecursionContext(_localctx, _startState, RULE_stat);
-					setState(107);
+					setState(113);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(108);
+					setState(114);
 					match(SEMICOLON);
-					setState(109);
+					setState(115);
 					stat(2);
 					}
 					} 
 				}
-				setState(114);
+				setState(120);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			}
@@ -716,57 +717,25 @@ public class WaccParser extends Parser {
 	}
 
 	public static class AssignLhsContext extends ParserRuleContext {
+		public IdentContext ident() {
+			return getRuleContext(IdentContext.class,0);
+		}
+		public ArrayElemContext arrayElem() {
+			return getRuleContext(ArrayElemContext.class,0);
+		}
+		public PairFstContext pairFst() {
+			return getRuleContext(PairFstContext.class,0);
+		}
+		public PairSndContext pairSnd() {
+			return getRuleContext(PairSndContext.class,0);
+		}
 		public AssignLhsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignLhs; }
-	 
-		public AssignLhsContext() { }
-		public void copyFrom(AssignLhsContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	public static class LhsPairFstContext extends AssignLhsContext {
-		public PairFstContext pairFst() {
-			return getRuleContext(PairFstContext.class,0);
-		}
-		public LhsPairFstContext(AssignLhsContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitLhsPairFst(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class LhsIdentContext extends AssignLhsContext {
-		public IdentContext ident() {
-			return getRuleContext(IdentContext.class,0);
-		}
-		public LhsIdentContext(AssignLhsContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitLhsIdent(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class LhsArrElemContext extends AssignLhsContext {
-		public ArrayElemContext arrayElem() {
-			return getRuleContext(ArrayElemContext.class,0);
-		}
-		public LhsArrElemContext(AssignLhsContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitLhsArrElem(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class LhsPairSndContext extends AssignLhsContext {
-		public PairSndContext pairSnd() {
-			return getRuleContext(PairSndContext.class,0);
-		}
-		public LhsPairSndContext(AssignLhsContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitLhsPairSnd(this);
+			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitAssignLhs(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -775,38 +744,34 @@ public class WaccParser extends Parser {
 		AssignLhsContext _localctx = new AssignLhsContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_assignLhs);
 		try {
-			setState(119);
+			setState(125);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 			case 1:
-				_localctx = new LhsIdentContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(115);
+				setState(121);
 				ident();
 				}
 				break;
 			case 2:
-				_localctx = new LhsArrElemContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(116);
+				setState(122);
 				arrayElem();
 				}
 				break;
 			case 3:
-				_localctx = new LhsPairFstContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(117);
+				setState(123);
 				pairFst();
 				}
 				break;
 			case 4:
-				_localctx = new LhsPairSndContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(118);
+				setState(124);
 				pairSnd();
 				}
 				break;
@@ -824,17 +789,186 @@ public class WaccParser extends Parser {
 	}
 
 	public static class AssignRhsContext extends ParserRuleContext {
+		public ArrayLiterContext arrayLiter() {
+			return getRuleContext(ArrayLiterContext.class,0);
+		}
+		public CallContext call() {
+			return getRuleContext(CallContext.class,0);
+		}
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public NewpairContext newpair() {
+			return getRuleContext(NewpairContext.class,0);
+		}
+		public PairFstContext pairFst() {
+			return getRuleContext(PairFstContext.class,0);
+		}
+		public PairSndContext pairSnd() {
+			return getRuleContext(PairSndContext.class,0);
+		}
 		public AssignRhsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignRhs; }
-	 
-		public AssignRhsContext() { }
-		public void copyFrom(AssignRhsContext ctx) {
-			super.copyFrom(ctx);
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitAssignRhs(this);
+			else return visitor.visitChildren(this);
 		}
 	}
-	public static class RhsCallContext extends AssignRhsContext {
+
+	public final AssignRhsContext assignRhs() throws RecognitionException {
+		AssignRhsContext _localctx = new AssignRhsContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_assignRhs);
+		try {
+			setState(133);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case OPEN_BRACKET:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(127);
+				arrayLiter();
+				}
+				break;
+			case CALL:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(128);
+				call();
+				}
+				break;
+			case OPEN_PARENTHESES:
+			case NOT:
+			case NEG:
+			case LENGTH:
+			case ORD:
+			case CHR:
+			case ADD:
+			case INT_LITER:
+			case BOOL_LITER:
+			case PAIR_LITER:
+			case CHAR_LITER:
+			case STR_LITER:
+			case IDENT:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(129);
+				expr(0);
+				}
+				break;
+			case NEWPAIR:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(130);
+				newpair();
+				}
+				break;
+			case FST:
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(131);
+				pairFst();
+				}
+				break;
+			case SND:
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(132);
+				pairSnd();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ArrayLiterContext extends ParserRuleContext {
+		public TerminalNode OPEN_BRACKET() { return getToken(WaccParser.OPEN_BRACKET, 0); }
+		public TerminalNode CLOSE_BRACKET() { return getToken(WaccParser.CLOSE_BRACKET, 0); }
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(WaccParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(WaccParser.COMMA, i);
+		}
+		public ArrayLiterContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_arrayLiter; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitArrayLiter(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ArrayLiterContext arrayLiter() throws RecognitionException {
+		ArrayLiterContext _localctx = new ArrayLiterContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_arrayLiter);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(135);
+			match(OPEN_BRACKET);
+			setState(144);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OPEN_PARENTHESES) | (1L << NOT) | (1L << NEG) | (1L << LENGTH) | (1L << ORD) | (1L << CHR) | (1L << ADD) | (1L << INT_LITER) | (1L << BOOL_LITER) | (1L << PAIR_LITER) | (1L << CHAR_LITER) | (1L << STR_LITER) | (1L << IDENT))) != 0)) {
+				{
+				setState(136);
+				expr(0);
+				setState(141);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				while (_la==COMMA) {
+					{
+					{
+					setState(137);
+					match(COMMA);
+					setState(138);
+					expr(0);
+					}
+					}
+					setState(143);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				}
+				}
+			}
+
+			setState(146);
+			match(CLOSE_BRACKET);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class CallContext extends ParserRuleContext {
 		public TerminalNode CALL() { return getToken(WaccParser.CALL, 0); }
 		public IdentContext ident() {
 			return getRuleContext(IdentContext.class,0);
@@ -851,14 +985,72 @@ public class WaccParser extends Parser {
 		public TerminalNode COMMA(int i) {
 			return getToken(WaccParser.COMMA, i);
 		}
-		public RhsCallContext(AssignRhsContext ctx) { copyFrom(ctx); }
+		public CallContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_call; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitRhsCall(this);
+			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitCall(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class RhsNewpairContext extends AssignRhsContext {
+
+	public final CallContext call() throws RecognitionException {
+		CallContext _localctx = new CallContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_call);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(148);
+			match(CALL);
+			setState(149);
+			ident();
+			setState(150);
+			match(OPEN_PARENTHESES);
+			setState(159);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OPEN_PARENTHESES) | (1L << NOT) | (1L << NEG) | (1L << LENGTH) | (1L << ORD) | (1L << CHR) | (1L << ADD) | (1L << INT_LITER) | (1L << BOOL_LITER) | (1L << PAIR_LITER) | (1L << CHAR_LITER) | (1L << STR_LITER) | (1L << IDENT))) != 0)) {
+				{
+				setState(151);
+				expr(0);
+				setState(156);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				while (_la==COMMA) {
+					{
+					{
+					setState(152);
+					match(COMMA);
+					setState(153);
+					expr(0);
+					}
+					}
+					setState(158);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				}
+				}
+			}
+
+			setState(161);
+			match(CLOSE_PARENTHESES);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class NewpairContext extends ParserRuleContext {
 		public TerminalNode NEWPAIR() { return getToken(WaccParser.NEWPAIR, 0); }
 		public TerminalNode OPEN_PARENTHESES() { return getToken(WaccParser.OPEN_PARENTHESES, 0); }
 		public List<ExprContext> expr() {
@@ -869,207 +1061,35 @@ public class WaccParser extends Parser {
 		}
 		public TerminalNode COMMA() { return getToken(WaccParser.COMMA, 0); }
 		public TerminalNode CLOSE_PARENTHESES() { return getToken(WaccParser.CLOSE_PARENTHESES, 0); }
-		public RhsNewpairContext(AssignRhsContext ctx) { copyFrom(ctx); }
+		public NewpairContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_newpair; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitRhsNewpair(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class RhsArrLitContext extends AssignRhsContext {
-		public TerminalNode OPEN_BRACKET() { return getToken(WaccParser.OPEN_BRACKET, 0); }
-		public TerminalNode CLOSE_BRACKET() { return getToken(WaccParser.CLOSE_BRACKET, 0); }
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
-		}
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
-		}
-		public List<TerminalNode> COMMA() { return getTokens(WaccParser.COMMA); }
-		public TerminalNode COMMA(int i) {
-			return getToken(WaccParser.COMMA, i);
-		}
-		public RhsArrLitContext(AssignRhsContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitRhsArrLit(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class RhsPairSndContext extends AssignRhsContext {
-		public PairSndContext pairSnd() {
-			return getRuleContext(PairSndContext.class,0);
-		}
-		public RhsPairSndContext(AssignRhsContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitRhsPairSnd(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class RhsExprContext extends AssignRhsContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
-		}
-		public RhsExprContext(AssignRhsContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitRhsExpr(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class RhsPairFstContext extends AssignRhsContext {
-		public PairFstContext pairFst() {
-			return getRuleContext(PairFstContext.class,0);
-		}
-		public RhsPairFstContext(AssignRhsContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitRhsPairFst(this);
+			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitNewpair(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final AssignRhsContext assignRhs() throws RecognitionException {
-		AssignRhsContext _localctx = new AssignRhsContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_assignRhs);
-		int _la;
+	public final NewpairContext newpair() throws RecognitionException {
+		NewpairContext _localctx = new NewpairContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_newpair);
 		try {
-			setState(158);
-			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case OPEN_BRACKET:
-				_localctx = new RhsArrLitContext(_localctx);
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(121);
-				match(OPEN_BRACKET);
-				setState(130);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OPEN_PARENTHESES) | (1L << NOT) | (1L << NEG) | (1L << LENGTH) | (1L << ORD) | (1L << CHR) | (1L << ADD) | (1L << INT_LITER) | (1L << BOOL_LITER) | (1L << PAIR_LITER) | (1L << CHAR_LITER) | (1L << STR_LITER) | (1L << IDENT))) != 0)) {
-					{
-					setState(122);
-					expr(0);
-					setState(127);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					while (_la==COMMA) {
-						{
-						{
-						setState(123);
-						match(COMMA);
-						setState(124);
-						expr(0);
-						}
-						}
-						setState(129);
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					}
-					}
-				}
-
-				setState(132);
-				match(CLOSE_BRACKET);
-				}
-				break;
-			case CALL:
-				_localctx = new RhsCallContext(_localctx);
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(133);
-				match(CALL);
-				setState(134);
-				ident();
-				setState(135);
-				match(OPEN_PARENTHESES);
-				setState(144);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OPEN_PARENTHESES) | (1L << NOT) | (1L << NEG) | (1L << LENGTH) | (1L << ORD) | (1L << CHR) | (1L << ADD) | (1L << INT_LITER) | (1L << BOOL_LITER) | (1L << PAIR_LITER) | (1L << CHAR_LITER) | (1L << STR_LITER) | (1L << IDENT))) != 0)) {
-					{
-					setState(136);
-					expr(0);
-					setState(141);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					while (_la==COMMA) {
-						{
-						{
-						setState(137);
-						match(COMMA);
-						setState(138);
-						expr(0);
-						}
-						}
-						setState(143);
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					}
-					}
-				}
-
-				setState(146);
-				match(CLOSE_PARENTHESES);
-				}
-				break;
-			case OPEN_PARENTHESES:
-			case NOT:
-			case NEG:
-			case LENGTH:
-			case ORD:
-			case CHR:
-			case ADD:
-			case INT_LITER:
-			case BOOL_LITER:
-			case PAIR_LITER:
-			case CHAR_LITER:
-			case STR_LITER:
-			case IDENT:
-				_localctx = new RhsExprContext(_localctx);
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(148);
-				expr(0);
-				}
-				break;
-			case NEWPAIR:
-				_localctx = new RhsNewpairContext(_localctx);
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(149);
-				match(NEWPAIR);
-				setState(150);
-				match(OPEN_PARENTHESES);
-				setState(151);
-				expr(0);
-				setState(152);
-				match(COMMA);
-				setState(153);
-				expr(0);
-				setState(154);
-				match(CLOSE_PARENTHESES);
-				}
-				break;
-			case FST:
-				_localctx = new RhsPairFstContext(_localctx);
-				enterOuterAlt(_localctx, 5);
-				{
-				setState(156);
-				pairFst();
-				}
-				break;
-			case SND:
-				_localctx = new RhsPairSndContext(_localctx);
-				enterOuterAlt(_localctx, 6);
-				{
-				setState(157);
-				pairSnd();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(163);
+			match(NEWPAIR);
+			setState(164);
+			match(OPEN_PARENTHESES);
+			setState(165);
+			expr(0);
+			setState(166);
+			match(COMMA);
+			setState(167);
+			expr(0);
+			setState(168);
+			match(CLOSE_PARENTHESES);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1259,12 +1279,12 @@ public class WaccParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ExprStrlitContext extends ExprContext {
+	public static class ExprStrLitContext extends ExprContext {
 		public TerminalNode STR_LITER() { return getToken(WaccParser.STR_LITER, 0); }
-		public ExprStrlitContext(ExprContext ctx) { copyFrom(ctx); }
+		public ExprStrLitContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitExprStrlit(this);
+			if ( visitor instanceof WaccParserVisitor ) return ((WaccParserVisitor<? extends T>)visitor).visitExprStrLit(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1278,28 +1298,46 @@ public class WaccParser extends Parser {
 		int _parentState = getState();
 		ExprContext _localctx = new ExprContext(_ctx, _parentState);
 		ExprContext _prevctx = _localctx;
-		int _startState = 12;
-		enterRecursionRule(_localctx, 12, RULE_expr, _p);
+		int _startState = 18;
+		enterRecursionRule(_localctx, 18, RULE_expr, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(177);
+			setState(187);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 			case 1:
 				{
-				_localctx = new ExprIntLitContext(_localctx);
+				_localctx = new ExprBoolLitContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(162);
+				setState(171);
+				match(BOOL_LITER);
+				}
+				break;
+			case 2:
+				{
+				_localctx = new ExprCharLitContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(172);
+				match(CHAR_LITER);
+				}
+				break;
+			case 3:
+				{
+				_localctx = new ExprIntLitContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(174);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==NEG || _la==ADD) {
 					{
-					setState(161);
+					setState(173);
 					_la = _input.LA(1);
 					if ( !(_la==NEG || _la==ADD) ) {
 					_errHandler.recoverInline(this);
@@ -1312,34 +1350,16 @@ public class WaccParser extends Parser {
 					}
 				}
 
-				setState(164);
+				setState(176);
 				match(INT_LITER);
-				}
-				break;
-			case 2:
-				{
-				_localctx = new ExprBoolLitContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(165);
-				match(BOOL_LITER);
-				}
-				break;
-			case 3:
-				{
-				_localctx = new ExprCharLitContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(166);
-				match(CHAR_LITER);
 				}
 				break;
 			case 4:
 				{
-				_localctx = new ExprStrlitContext(_localctx);
+				_localctx = new ExprStrLitContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(167);
+				setState(177);
 				match(STR_LITER);
 				}
 				break;
@@ -1348,7 +1368,7 @@ public class WaccParser extends Parser {
 				_localctx = new ExprPairLitContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(168);
+				setState(178);
 				match(PAIR_LITER);
 				}
 				break;
@@ -1357,7 +1377,7 @@ public class WaccParser extends Parser {
 				_localctx = new ExprArrElemContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(169);
+				setState(179);
 				arrayElem();
 				}
 				break;
@@ -1366,7 +1386,7 @@ public class WaccParser extends Parser {
 				_localctx = new ExprIdentContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(170);
+				setState(180);
 				ident();
 				}
 				break;
@@ -1375,11 +1395,11 @@ public class WaccParser extends Parser {
 				_localctx = new ExprParenContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(171);
+				setState(181);
 				match(OPEN_PARENTHESES);
-				setState(172);
+				setState(182);
 				expr(0);
-				setState(173);
+				setState(183);
 				match(CLOSE_PARENTHESES);
 				}
 				break;
@@ -1388,7 +1408,7 @@ public class WaccParser extends Parser {
 				_localctx = new ExprUnaryOpContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(175);
+				setState(185);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NOT) | (1L << NEG) | (1L << LENGTH) | (1L << ORD) | (1L << CHR))) != 0)) ) {
 				_errHandler.recoverInline(this);
@@ -1398,13 +1418,13 @@ public class WaccParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(176);
+				setState(186);
 				expr(6);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(196);
+			setState(206);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -1412,18 +1432,18 @@ public class WaccParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(194);
+					setState(204);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
 					case 1:
 						{
 						_localctx = new ExprMulDivModContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(179);
+						setState(189);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(180);
+						setState(190);
 						match(MULDIVMOD);
-						setState(181);
+						setState(191);
 						expr(6);
 						}
 						break;
@@ -1431,9 +1451,9 @@ public class WaccParser extends Parser {
 						{
 						_localctx = new ExprAddSubContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(182);
+						setState(192);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(183);
+						setState(193);
 						_la = _input.LA(1);
 						if ( !(_la==NEG || _la==ADD) ) {
 						_errHandler.recoverInline(this);
@@ -1443,7 +1463,7 @@ public class WaccParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(184);
+						setState(194);
 						expr(5);
 						}
 						break;
@@ -1451,11 +1471,11 @@ public class WaccParser extends Parser {
 						{
 						_localctx = new ExprCmpContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(185);
+						setState(195);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(186);
+						setState(196);
 						match(CMP);
-						setState(187);
+						setState(197);
 						expr(4);
 						}
 						break;
@@ -1463,11 +1483,11 @@ public class WaccParser extends Parser {
 						{
 						_localctx = new ExprEqContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(188);
+						setState(198);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(189);
+						setState(199);
 						match(EQ);
-						setState(190);
+						setState(200);
 						expr(3);
 						}
 						break;
@@ -1475,18 +1495,18 @@ public class WaccParser extends Parser {
 						{
 						_localctx = new ExprAndOrContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(191);
+						setState(201);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-						setState(192);
+						setState(202);
 						match(ANDOR);
-						setState(193);
+						setState(203);
 						expr(2);
 						}
 						break;
 					}
 					} 
 				}
-				setState(198);
+				setState(208);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
 			}
@@ -1526,29 +1546,29 @@ public class WaccParser extends Parser {
 
 	public final TypeContext type() throws RecognitionException {
 		TypeContext _localctx = new TypeContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_type);
+		enterRule(_localctx, 20, RULE_type);
 		try {
-			setState(202);
+			setState(212);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(199);
+				setState(209);
 				baseType();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(200);
+				setState(210);
 				arrayType(0);
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(201);
+				setState(211);
 				pairType();
 				}
 				break;
@@ -1580,11 +1600,11 @@ public class WaccParser extends Parser {
 
 	public final BaseTypeContext baseType() throws RecognitionException {
 		BaseTypeContext _localctx = new BaseTypeContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_baseType);
+		enterRule(_localctx, 22, RULE_baseType);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(204);
+			setState(214);
 			match(BASE_TYPE);
 			}
 		}
@@ -1631,32 +1651,32 @@ public class WaccParser extends Parser {
 		int _parentState = getState();
 		ArrayTypeContext _localctx = new ArrayTypeContext(_ctx, _parentState);
 		ArrayTypeContext _prevctx = _localctx;
-		int _startState = 18;
-		enterRecursionRule(_localctx, 18, RULE_arrayType, _p);
+		int _startState = 24;
+		enterRecursionRule(_localctx, 24, RULE_arrayType, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(215);
+			setState(225);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case BASE_TYPE:
 				{
-				setState(207);
+				setState(217);
 				baseType();
-				setState(208);
+				setState(218);
 				match(OPEN_BRACKET);
-				setState(209);
+				setState(219);
 				match(CLOSE_BRACKET);
 				}
 				break;
 			case PAIR:
 				{
-				setState(211);
+				setState(221);
 				pairType();
-				setState(212);
+				setState(222);
 				match(OPEN_BRACKET);
-				setState(213);
+				setState(223);
 				match(CLOSE_BRACKET);
 				}
 				break;
@@ -1664,7 +1684,7 @@ public class WaccParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(222);
+			setState(232);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,17,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -1675,16 +1695,16 @@ public class WaccParser extends Parser {
 					{
 					_localctx = new ArrayTypeContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_arrayType);
-					setState(217);
+					setState(227);
 					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-					setState(218);
+					setState(228);
 					match(OPEN_BRACKET);
-					setState(219);
+					setState(229);
 					match(CLOSE_BRACKET);
 					}
 					} 
 				}
-				setState(224);
+				setState(234);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,17,_ctx);
 			}
@@ -1725,21 +1745,21 @@ public class WaccParser extends Parser {
 
 	public final PairTypeContext pairType() throws RecognitionException {
 		PairTypeContext _localctx = new PairTypeContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_pairType);
+		enterRule(_localctx, 26, RULE_pairType);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(225);
+			setState(235);
 			match(PAIR);
-			setState(226);
+			setState(236);
 			match(OPEN_PARENTHESES);
-			setState(227);
+			setState(237);
 			pairElemType();
-			setState(228);
+			setState(238);
 			match(COMMA);
-			setState(229);
+			setState(239);
 			pairElemType();
-			setState(230);
+			setState(240);
 			match(CLOSE_PARENTHESES);
 			}
 		}
@@ -1775,29 +1795,29 @@ public class WaccParser extends Parser {
 
 	public final PairElemTypeContext pairElemType() throws RecognitionException {
 		PairElemTypeContext _localctx = new PairElemTypeContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_pairElemType);
+		enterRule(_localctx, 28, RULE_pairElemType);
 		try {
-			setState(235);
+			setState(245);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(232);
+				setState(242);
 				match(PAIR);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(233);
+				setState(243);
 				baseType();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(234);
+				setState(244);
 				arrayType(0);
 				}
 				break;
@@ -1845,14 +1865,14 @@ public class WaccParser extends Parser {
 
 	public final ArrayElemContext arrayElem() throws RecognitionException {
 		ArrayElemContext _localctx = new ArrayElemContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_arrayElem);
+		enterRule(_localctx, 30, RULE_arrayElem);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(237);
+			setState(247);
 			ident();
-			setState(242); 
+			setState(252); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -1860,11 +1880,11 @@ public class WaccParser extends Parser {
 				case 1:
 					{
 					{
-					setState(238);
+					setState(248);
 					match(OPEN_BRACKET);
-					setState(239);
+					setState(249);
 					expr(0);
-					setState(240);
+					setState(250);
 					match(CLOSE_BRACKET);
 					}
 					}
@@ -1872,7 +1892,7 @@ public class WaccParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(244); 
+				setState(254); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,19,_ctx);
 			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
@@ -1904,11 +1924,11 @@ public class WaccParser extends Parser {
 
 	public final IdentContext ident() throws RecognitionException {
 		IdentContext _localctx = new IdentContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_ident);
+		enterRule(_localctx, 32, RULE_ident);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(246);
+			setState(256);
 			match(IDENT);
 			}
 		}
@@ -1941,13 +1961,13 @@ public class WaccParser extends Parser {
 
 	public final PairFstContext pairFst() throws RecognitionException {
 		PairFstContext _localctx = new PairFstContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_pairFst);
+		enterRule(_localctx, 34, RULE_pairFst);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(248);
+			setState(258);
 			match(FST);
-			setState(249);
+			setState(259);
 			expr(0);
 			}
 		}
@@ -1980,13 +2000,13 @@ public class WaccParser extends Parser {
 
 	public final PairSndContext pairSnd() throws RecognitionException {
 		PairSndContext _localctx = new PairSndContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_pairSnd);
+		enterRule(_localctx, 36, RULE_pairSnd);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(251);
+			setState(261);
 			match(SND);
-			setState(252);
+			setState(262);
 			expr(0);
 			}
 		}
@@ -2005,9 +2025,9 @@ public class WaccParser extends Parser {
 		switch (ruleIndex) {
 		case 3:
 			return stat_sempred((StatContext)_localctx, predIndex);
-		case 6:
-			return expr_sempred((ExprContext)_localctx, predIndex);
 		case 9:
+			return expr_sempred((ExprContext)_localctx, predIndex);
+		case 12:
 			return arrayType_sempred((ArrayTypeContext)_localctx, predIndex);
 		}
 		return true;
@@ -2043,93 +2063,97 @@ public class WaccParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\62\u0101\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\62\u010b\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
-		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\3\2\3\2"+
-		"\7\2%\n\2\f\2\16\2(\13\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\7\3\64"+
-		"\n\3\f\3\16\3\67\13\3\5\39\n\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\5\3\5"+
+		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
+		"\4\23\t\23\4\24\t\24\3\2\3\2\7\2+\n\2\f\2\16\2.\13\2\3\2\3\2\3\2\3\2\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\7\3:\n\3\f\3\16\3=\13\3\5\3?\n\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
 		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
-		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
-		"\3\5\3\5\3\5\3\5\5\5l\n\5\3\5\3\5\3\5\7\5q\n\5\f\5\16\5t\13\5\3\6\3\6"+
-		"\3\6\3\6\5\6z\n\6\3\7\3\7\3\7\3\7\7\7\u0080\n\7\f\7\16\7\u0083\13\7\5"+
-		"\7\u0085\n\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7\u008e\n\7\f\7\16\7\u0091"+
-		"\13\7\5\7\u0093\n\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5"+
-		"\7\u00a1\n\7\3\b\3\b\5\b\u00a5\n\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b"+
-		"\3\b\3\b\3\b\3\b\5\b\u00b4\n\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b"+
-		"\3\b\3\b\3\b\3\b\3\b\7\b\u00c5\n\b\f\b\16\b\u00c8\13\b\3\t\3\t\3\t\5\t"+
-		"\u00cd\n\t\3\n\3\n\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\5\13\u00da"+
-		"\n\13\3\13\3\13\3\13\7\13\u00df\n\13\f\13\16\13\u00e2\13\13\3\f\3\f\3"+
-		"\f\3\f\3\f\3\f\3\f\3\r\3\r\3\r\5\r\u00ee\n\r\3\16\3\16\3\16\3\16\3\16"+
-		"\6\16\u00f5\n\16\r\16\16\16\u00f6\3\17\3\17\3\20\3\20\3\20\3\21\3\21\3"+
-		"\21\3\21\2\5\b\16\24\22\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \2\4\4"+
-		"\2  %%\3\2\37#\2\u0120\2\"\3\2\2\2\4-\3\2\2\2\6?\3\2\2\2\bk\3\2\2\2\n"+
-		"y\3\2\2\2\f\u00a0\3\2\2\2\16\u00b3\3\2\2\2\20\u00cc\3\2\2\2\22\u00ce\3"+
-		"\2\2\2\24\u00d9\3\2\2\2\26\u00e3\3\2\2\2\30\u00ed\3\2\2\2\32\u00ef\3\2"+
-		"\2\2\34\u00f8\3\2\2\2\36\u00fa\3\2\2\2 \u00fd\3\2\2\2\"&\7\7\2\2#%\5\4"+
-		"\3\2$#\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\')\3\2\2\2(&\3\2\2\2)*\5"+
-		"\b\5\2*+\7\b\2\2+,\7\2\2\3,\3\3\2\2\2-.\5\20\t\2./\5\34\17\2/8\7\3\2\2"+
-		"\60\65\5\6\4\2\61\62\7\5\2\2\62\64\5\6\4\2\63\61\3\2\2\2\64\67\3\2\2\2"+
-		"\65\63\3\2\2\2\65\66\3\2\2\2\669\3\2\2\2\67\65\3\2\2\28\60\3\2\2\289\3"+
-		"\2\2\29:\3\2\2\2:;\7\4\2\2;<\7\t\2\2<=\5\b\5\2=>\7\b\2\2>\5\3\2\2\2?@"+
-		"\5\20\t\2@A\5\34\17\2A\7\3\2\2\2BC\b\5\1\2Cl\7\n\2\2DE\5\n\6\2EF\7\13"+
-		"\2\2FG\5\f\7\2Gl\3\2\2\2HI\5\20\t\2IJ\5\34\17\2JK\7\13\2\2KL\5\f\7\2L"+
-		"l\3\2\2\2MN\7\17\2\2Nl\5\16\b\2OP\7\r\2\2Pl\5\16\b\2QR\7\20\2\2Rl\5\16"+
-		"\b\2ST\7\21\2\2Tl\5\16\b\2UV\7\16\2\2Vl\5\16\b\2WX\7\f\2\2Xl\5\n\6\2Y"+
-		"Z\7\7\2\2Z[\5\b\5\2[\\\7\b\2\2\\l\3\2\2\2]^\7\22\2\2^_\5\16\b\2_`\7\23"+
-		"\2\2`a\5\b\5\2ab\7\24\2\2bc\5\b\5\2cd\7\25\2\2dl\3\2\2\2ef\7\26\2\2fg"+
-		"\5\16\b\2gh\7\27\2\2hi\5\b\5\2ij\7\30\2\2jl\3\2\2\2kB\3\2\2\2kD\3\2\2"+
-		"\2kH\3\2\2\2kM\3\2\2\2kO\3\2\2\2kQ\3\2\2\2kS\3\2\2\2kU\3\2\2\2kW\3\2\2"+
-		"\2kY\3\2\2\2k]\3\2\2\2ke\3\2\2\2lr\3\2\2\2mn\f\3\2\2no\7\6\2\2oq\5\b\5"+
-		"\4pm\3\2\2\2qt\3\2\2\2rp\3\2\2\2rs\3\2\2\2s\t\3\2\2\2tr\3\2\2\2uz\5\34"+
-		"\17\2vz\5\32\16\2wz\5\36\20\2xz\5 \21\2yu\3\2\2\2yv\3\2\2\2yw\3\2\2\2"+
-		"yx\3\2\2\2z\13\3\2\2\2{\u0084\7\35\2\2|\u0081\5\16\b\2}~\7\5\2\2~\u0080"+
-		"\5\16\b\2\177}\3\2\2\2\u0080\u0083\3\2\2\2\u0081\177\3\2\2\2\u0081\u0082"+
-		"\3\2\2\2\u0082\u0085\3\2\2\2\u0083\u0081\3\2\2\2\u0084|\3\2\2\2\u0084"+
-		"\u0085\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u00a1\7\36\2\2\u0087\u0088\7"+
-		"\32\2\2\u0088\u0089\5\34\17\2\u0089\u0092\7\3\2\2\u008a\u008f\5\16\b\2"+
-		"\u008b\u008c\7\5\2\2\u008c\u008e\5\16\b\2\u008d\u008b\3\2\2\2\u008e\u0091"+
-		"\3\2\2\2\u008f\u008d\3\2\2\2\u008f\u0090\3\2\2\2\u0090\u0093\3\2\2\2\u0091"+
-		"\u008f\3\2\2\2\u0092\u008a\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0094\3\2"+
-		"\2\2\u0094\u0095\7\4\2\2\u0095\u00a1\3\2\2\2\u0096\u00a1\5\16\b\2\u0097"+
-		"\u0098\7\31\2\2\u0098\u0099\7\3\2\2\u0099\u009a\5\16\b\2\u009a\u009b\7"+
-		"\5\2\2\u009b\u009c\5\16\b\2\u009c\u009d\7\4\2\2\u009d\u00a1\3\2\2\2\u009e"+
-		"\u00a1\5\36\20\2\u009f\u00a1\5 \21\2\u00a0{\3\2\2\2\u00a0\u0087\3\2\2"+
-		"\2\u00a0\u0096\3\2\2\2\u00a0\u0097\3\2\2\2\u00a0\u009e\3\2\2\2\u00a0\u009f"+
-		"\3\2\2\2\u00a1\r\3\2\2\2\u00a2\u00a4\b\b\1\2\u00a3\u00a5\t\2\2\2\u00a4"+
-		"\u00a3\3\2\2\2\u00a4\u00a5\3\2\2\2\u00a5\u00a6\3\2\2\2\u00a6\u00b4\7+"+
-		"\2\2\u00a7\u00b4\7,\2\2\u00a8\u00b4\7.\2\2\u00a9\u00b4\7/\2\2\u00aa\u00b4"+
-		"\7-\2\2\u00ab\u00b4\5\32\16\2\u00ac\u00b4\5\34\17\2\u00ad\u00ae\7\3\2"+
-		"\2\u00ae\u00af\5\16\b\2\u00af\u00b0\7\4\2\2\u00b0\u00b4\3\2\2\2\u00b1"+
-		"\u00b2\t\3\2\2\u00b2\u00b4\5\16\b\b\u00b3\u00a2\3\2\2\2\u00b3\u00a7\3"+
-		"\2\2\2\u00b3\u00a8\3\2\2\2\u00b3\u00a9\3\2\2\2\u00b3\u00aa\3\2\2\2\u00b3"+
-		"\u00ab\3\2\2\2\u00b3\u00ac\3\2\2\2\u00b3\u00ad\3\2\2\2\u00b3\u00b1\3\2"+
-		"\2\2\u00b4\u00c6\3\2\2\2\u00b5\u00b6\f\7\2\2\u00b6\u00b7\7$\2\2\u00b7"+
-		"\u00c5\5\16\b\b\u00b8\u00b9\f\6\2\2\u00b9\u00ba\t\2\2\2\u00ba\u00c5\5"+
-		"\16\b\7\u00bb\u00bc\f\5\2\2\u00bc\u00bd\7&\2\2\u00bd\u00c5\5\16\b\6\u00be"+
-		"\u00bf\f\4\2\2\u00bf\u00c0\7\'\2\2\u00c0\u00c5\5\16\b\5\u00c1\u00c2\f"+
-		"\3\2\2\u00c2\u00c3\7(\2\2\u00c3\u00c5\5\16\b\4\u00c4\u00b5\3\2\2\2\u00c4"+
-		"\u00b8\3\2\2\2\u00c4\u00bb\3\2\2\2\u00c4\u00be\3\2\2\2\u00c4\u00c1\3\2"+
-		"\2\2\u00c5\u00c8\3\2\2\2\u00c6\u00c4\3\2\2\2\u00c6\u00c7\3\2\2\2\u00c7"+
-		"\17\3\2\2\2\u00c8\u00c6\3\2\2\2\u00c9\u00cd\5\22\n\2\u00ca\u00cd\5\24"+
-		"\13\2\u00cb\u00cd\5\26\f\2\u00cc\u00c9\3\2\2\2\u00cc\u00ca\3\2\2\2\u00cc"+
-		"\u00cb\3\2\2\2\u00cd\21\3\2\2\2\u00ce\u00cf\7)\2\2\u00cf\23\3\2\2\2\u00d0"+
-		"\u00d1\b\13\1\2\u00d1\u00d2\5\22\n\2\u00d2\u00d3\7\35\2\2\u00d3\u00d4"+
-		"\7\36\2\2\u00d4\u00da\3\2\2\2\u00d5\u00d6\5\26\f\2\u00d6\u00d7\7\35\2"+
-		"\2\u00d7\u00d8\7\36\2\2\u00d8\u00da\3\2\2\2\u00d9\u00d0\3\2\2\2\u00d9"+
-		"\u00d5\3\2\2\2\u00da\u00e0\3\2\2\2\u00db\u00dc\f\4\2\2\u00dc\u00dd\7\35"+
-		"\2\2\u00dd\u00df\7\36\2\2\u00de\u00db\3\2\2\2\u00df\u00e2\3\2\2\2\u00e0"+
-		"\u00de\3\2\2\2\u00e0\u00e1\3\2\2\2\u00e1\25\3\2\2\2\u00e2\u00e0\3\2\2"+
-		"\2\u00e3\u00e4\7*\2\2\u00e4\u00e5\7\3\2\2\u00e5\u00e6\5\30\r\2\u00e6\u00e7"+
-		"\7\5\2\2\u00e7\u00e8\5\30\r\2\u00e8\u00e9\7\4\2\2\u00e9\27\3\2\2\2\u00ea"+
-		"\u00ee\7*\2\2\u00eb\u00ee\5\22\n\2\u00ec\u00ee\5\24\13\2\u00ed\u00ea\3"+
-		"\2\2\2\u00ed\u00eb\3\2\2\2\u00ed\u00ec\3\2\2\2\u00ee\31\3\2\2\2\u00ef"+
-		"\u00f4\5\34\17\2\u00f0\u00f1\7\35\2\2\u00f1\u00f2\5\16\b\2\u00f2\u00f3"+
-		"\7\36\2\2\u00f3\u00f5\3\2\2\2\u00f4\u00f0\3\2\2\2\u00f5\u00f6\3\2\2\2"+
-		"\u00f6\u00f4\3\2\2\2\u00f6\u00f7\3\2\2\2\u00f7\33\3\2\2\2\u00f8\u00f9"+
-		"\7\60\2\2\u00f9\35\3\2\2\2\u00fa\u00fb\7\33\2\2\u00fb\u00fc\5\16\b\2\u00fc"+
-		"\37\3\2\2\2\u00fd\u00fe\7\34\2\2\u00fe\u00ff\5\16\b\2\u00ff!\3\2\2\2\26"+
-		"&\658kry\u0081\u0084\u008f\u0092\u00a0\u00a4\u00b3\u00c4\u00c6\u00cc\u00d9"+
-		"\u00e0\u00ed\u00f6";
+		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5r\n\5\3\5\3\5\3\5\7\5w\n"+
+		"\5\f\5\16\5z\13\5\3\6\3\6\3\6\3\6\5\6\u0080\n\6\3\7\3\7\3\7\3\7\3\7\3"+
+		"\7\5\7\u0088\n\7\3\b\3\b\3\b\3\b\7\b\u008e\n\b\f\b\16\b\u0091\13\b\5\b"+
+		"\u0093\n\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\7\t\u009d\n\t\f\t\16\t\u00a0"+
+		"\13\t\5\t\u00a2\n\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13"+
+		"\3\13\5\13\u00b1\n\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13"+
+		"\3\13\5\13\u00be\n\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13"+
+		"\3\13\3\13\3\13\3\13\3\13\7\13\u00cf\n\13\f\13\16\13\u00d2\13\13\3\f\3"+
+		"\f\3\f\5\f\u00d7\n\f\3\r\3\r\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3"+
+		"\16\5\16\u00e4\n\16\3\16\3\16\3\16\7\16\u00e9\n\16\f\16\16\16\u00ec\13"+
+		"\16\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\20\3\20\3\20\5\20\u00f8\n\20"+
+		"\3\21\3\21\3\21\3\21\3\21\6\21\u00ff\n\21\r\21\16\21\u0100\3\22\3\22\3"+
+		"\23\3\23\3\23\3\24\3\24\3\24\3\24\2\5\b\24\32\25\2\4\6\b\n\f\16\20\22"+
+		"\24\26\30\32\34\36 \"$&\2\4\4\2  %%\3\2\37#\2\u0127\2(\3\2\2\2\4\63\3"+
+		"\2\2\2\6E\3\2\2\2\bq\3\2\2\2\n\177\3\2\2\2\f\u0087\3\2\2\2\16\u0089\3"+
+		"\2\2\2\20\u0096\3\2\2\2\22\u00a5\3\2\2\2\24\u00bd\3\2\2\2\26\u00d6\3\2"+
+		"\2\2\30\u00d8\3\2\2\2\32\u00e3\3\2\2\2\34\u00ed\3\2\2\2\36\u00f7\3\2\2"+
+		"\2 \u00f9\3\2\2\2\"\u0102\3\2\2\2$\u0104\3\2\2\2&\u0107\3\2\2\2(,\7\7"+
+		"\2\2)+\5\4\3\2*)\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-/\3\2\2\2.,\3\2"+
+		"\2\2/\60\5\b\5\2\60\61\7\b\2\2\61\62\7\2\2\3\62\3\3\2\2\2\63\64\5\26\f"+
+		"\2\64\65\5\"\22\2\65>\7\3\2\2\66;\5\6\4\2\678\7\5\2\28:\5\6\4\29\67\3"+
+		"\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<?\3\2\2\2=;\3\2\2\2>\66\3\2\2\2>"+
+		"?\3\2\2\2?@\3\2\2\2@A\7\4\2\2AB\7\t\2\2BC\5\b\5\2CD\7\b\2\2D\5\3\2\2\2"+
+		"EF\5\26\f\2FG\5\"\22\2G\7\3\2\2\2HI\b\5\1\2Ir\7\n\2\2JK\5\26\f\2KL\5\""+
+		"\22\2LM\7\13\2\2MN\5\f\7\2Nr\3\2\2\2OP\5\n\6\2PQ\7\13\2\2QR\5\f\7\2Rr"+
+		"\3\2\2\2ST\7\17\2\2Tr\5\24\13\2UV\7\r\2\2Vr\5\24\13\2WX\7\20\2\2Xr\5\24"+
+		"\13\2YZ\7\21\2\2Zr\5\24\13\2[\\\7\16\2\2\\r\5\24\13\2]^\7\f\2\2^r\5\n"+
+		"\6\2_`\7\7\2\2`a\5\b\5\2ab\7\b\2\2br\3\2\2\2cd\7\22\2\2de\5\24\13\2ef"+
+		"\7\23\2\2fg\5\b\5\2gh\7\24\2\2hi\5\b\5\2ij\7\25\2\2jr\3\2\2\2kl\7\26\2"+
+		"\2lm\5\24\13\2mn\7\27\2\2no\5\b\5\2op\7\30\2\2pr\3\2\2\2qH\3\2\2\2qJ\3"+
+		"\2\2\2qO\3\2\2\2qS\3\2\2\2qU\3\2\2\2qW\3\2\2\2qY\3\2\2\2q[\3\2\2\2q]\3"+
+		"\2\2\2q_\3\2\2\2qc\3\2\2\2qk\3\2\2\2rx\3\2\2\2st\f\3\2\2tu\7\6\2\2uw\5"+
+		"\b\5\4vs\3\2\2\2wz\3\2\2\2xv\3\2\2\2xy\3\2\2\2y\t\3\2\2\2zx\3\2\2\2{\u0080"+
+		"\5\"\22\2|\u0080\5 \21\2}\u0080\5$\23\2~\u0080\5&\24\2\177{\3\2\2\2\177"+
+		"|\3\2\2\2\177}\3\2\2\2\177~\3\2\2\2\u0080\13\3\2\2\2\u0081\u0088\5\16"+
+		"\b\2\u0082\u0088\5\20\t\2\u0083\u0088\5\24\13\2\u0084\u0088\5\22\n\2\u0085"+
+		"\u0088\5$\23\2\u0086\u0088\5&\24\2\u0087\u0081\3\2\2\2\u0087\u0082\3\2"+
+		"\2\2\u0087\u0083\3\2\2\2\u0087\u0084\3\2\2\2\u0087\u0085\3\2\2\2\u0087"+
+		"\u0086\3\2\2\2\u0088\r\3\2\2\2\u0089\u0092\7\35\2\2\u008a\u008f\5\24\13"+
+		"\2\u008b\u008c\7\5\2\2\u008c\u008e\5\24\13\2\u008d\u008b\3\2\2\2\u008e"+
+		"\u0091\3\2\2\2\u008f\u008d\3\2\2\2\u008f\u0090\3\2\2\2\u0090\u0093\3\2"+
+		"\2\2\u0091\u008f\3\2\2\2\u0092\u008a\3\2\2\2\u0092\u0093\3\2\2\2\u0093"+
+		"\u0094\3\2\2\2\u0094\u0095\7\36\2\2\u0095\17\3\2\2\2\u0096\u0097\7\32"+
+		"\2\2\u0097\u0098\5\"\22\2\u0098\u00a1\7\3\2\2\u0099\u009e\5\24\13\2\u009a"+
+		"\u009b\7\5\2\2\u009b\u009d\5\24\13\2\u009c\u009a\3\2\2\2\u009d\u00a0\3"+
+		"\2\2\2\u009e\u009c\3\2\2\2\u009e\u009f\3\2\2\2\u009f\u00a2\3\2\2\2\u00a0"+
+		"\u009e\3\2\2\2\u00a1\u0099\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a3\3\2"+
+		"\2\2\u00a3\u00a4\7\4\2\2\u00a4\21\3\2\2\2\u00a5\u00a6\7\31\2\2\u00a6\u00a7"+
+		"\7\3\2\2\u00a7\u00a8\5\24\13\2\u00a8\u00a9\7\5\2\2\u00a9\u00aa\5\24\13"+
+		"\2\u00aa\u00ab\7\4\2\2\u00ab\23\3\2\2\2\u00ac\u00ad\b\13\1\2\u00ad\u00be"+
+		"\7,\2\2\u00ae\u00be\7.\2\2\u00af\u00b1\t\2\2\2\u00b0\u00af\3\2\2\2\u00b0"+
+		"\u00b1\3\2\2\2\u00b1\u00b2\3\2\2\2\u00b2\u00be\7+\2\2\u00b3\u00be\7/\2"+
+		"\2\u00b4\u00be\7-\2\2\u00b5\u00be\5 \21\2\u00b6\u00be\5\"\22\2\u00b7\u00b8"+
+		"\7\3\2\2\u00b8\u00b9\5\24\13\2\u00b9\u00ba\7\4\2\2\u00ba\u00be\3\2\2\2"+
+		"\u00bb\u00bc\t\3\2\2\u00bc\u00be\5\24\13\b\u00bd\u00ac\3\2\2\2\u00bd\u00ae"+
+		"\3\2\2\2\u00bd\u00b0\3\2\2\2\u00bd\u00b3\3\2\2\2\u00bd\u00b4\3\2\2\2\u00bd"+
+		"\u00b5\3\2\2\2\u00bd\u00b6\3\2\2\2\u00bd\u00b7\3\2\2\2\u00bd\u00bb\3\2"+
+		"\2\2\u00be\u00d0\3\2\2\2\u00bf\u00c0\f\7\2\2\u00c0\u00c1\7$\2\2\u00c1"+
+		"\u00cf\5\24\13\b\u00c2\u00c3\f\6\2\2\u00c3\u00c4\t\2\2\2\u00c4\u00cf\5"+
+		"\24\13\7\u00c5\u00c6\f\5\2\2\u00c6\u00c7\7&\2\2\u00c7\u00cf\5\24\13\6"+
+		"\u00c8\u00c9\f\4\2\2\u00c9\u00ca\7\'\2\2\u00ca\u00cf\5\24\13\5\u00cb\u00cc"+
+		"\f\3\2\2\u00cc\u00cd\7(\2\2\u00cd\u00cf\5\24\13\4\u00ce\u00bf\3\2\2\2"+
+		"\u00ce\u00c2\3\2\2\2\u00ce\u00c5\3\2\2\2\u00ce\u00c8\3\2\2\2\u00ce\u00cb"+
+		"\3\2\2\2\u00cf\u00d2\3\2\2\2\u00d0\u00ce\3\2\2\2\u00d0\u00d1\3\2\2\2\u00d1"+
+		"\25\3\2\2\2\u00d2\u00d0\3\2\2\2\u00d3\u00d7\5\30\r\2\u00d4\u00d7\5\32"+
+		"\16\2\u00d5\u00d7\5\34\17\2\u00d6\u00d3\3\2\2\2\u00d6\u00d4\3\2\2\2\u00d6"+
+		"\u00d5\3\2\2\2\u00d7\27\3\2\2\2\u00d8\u00d9\7)\2\2\u00d9\31\3\2\2\2\u00da"+
+		"\u00db\b\16\1\2\u00db\u00dc\5\30\r\2\u00dc\u00dd\7\35\2\2\u00dd\u00de"+
+		"\7\36\2\2\u00de\u00e4\3\2\2\2\u00df\u00e0\5\34\17\2\u00e0\u00e1\7\35\2"+
+		"\2\u00e1\u00e2\7\36\2\2\u00e2\u00e4\3\2\2\2\u00e3\u00da\3\2\2\2\u00e3"+
+		"\u00df\3\2\2\2\u00e4\u00ea\3\2\2\2\u00e5\u00e6\f\4\2\2\u00e6\u00e7\7\35"+
+		"\2\2\u00e7\u00e9\7\36\2\2\u00e8\u00e5\3\2\2\2\u00e9\u00ec\3\2\2\2\u00ea"+
+		"\u00e8\3\2\2\2\u00ea\u00eb\3\2\2\2\u00eb\33\3\2\2\2\u00ec\u00ea\3\2\2"+
+		"\2\u00ed\u00ee\7*\2\2\u00ee\u00ef\7\3\2\2\u00ef\u00f0\5\36\20\2\u00f0"+
+		"\u00f1\7\5\2\2\u00f1\u00f2\5\36\20\2\u00f2\u00f3\7\4\2\2\u00f3\35\3\2"+
+		"\2\2\u00f4\u00f8\7*\2\2\u00f5\u00f8\5\30\r\2\u00f6\u00f8\5\32\16\2\u00f7"+
+		"\u00f4\3\2\2\2\u00f7\u00f5\3\2\2\2\u00f7\u00f6\3\2\2\2\u00f8\37\3\2\2"+
+		"\2\u00f9\u00fe\5\"\22\2\u00fa\u00fb\7\35\2\2\u00fb\u00fc\5\24\13\2\u00fc"+
+		"\u00fd\7\36\2\2\u00fd\u00ff\3\2\2\2\u00fe\u00fa\3\2\2\2\u00ff\u0100\3"+
+		"\2\2\2\u0100\u00fe\3\2\2\2\u0100\u0101\3\2\2\2\u0101!\3\2\2\2\u0102\u0103"+
+		"\7\60\2\2\u0103#\3\2\2\2\u0104\u0105\7\33\2\2\u0105\u0106\5\24\13\2\u0106"+
+		"%\3\2\2\2\u0107\u0108\7\34\2\2\u0108\u0109\5\24\13\2\u0109\'\3\2\2\2\26"+
+		",;>qx\177\u0087\u008f\u0092\u009e\u00a1\u00b0\u00bd\u00ce\u00d0\u00d6"+
+		"\u00e3\u00ea\u00f7\u0100";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

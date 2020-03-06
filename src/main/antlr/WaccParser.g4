@@ -19,8 +19,8 @@ param: type ident ;
 
 //Statements:
 stat: SKIPS                          #StatSkip
-    | assignLhs ASSIGN assignRhs     #StatAssignVar
     | type ident ASSIGN assignRhs    #StatInitVar
+    | assignLhs ASSIGN assignRhs     #StatAssignVar
     | EXIT expr                      #StatExit
     | FREE expr                      #StatFree
     | PRINT expr                     #StatPrint
@@ -34,26 +34,30 @@ stat: SKIPS                          #StatSkip
     ;
 
 //Assign LHS:
-assignLhs: ident     #LhsIdent
-         | arrayElem #LhsArrElem
-         | pairFst   #LhsPairFst
-         | pairSnd   #LhsPairSnd
+assignLhs: ident
+         | arrayElem
+         | pairFst
+         | pairSnd
          ;
 
 //Assign RHS:
-assignRhs: OPEN_BRACKET (expr (COMMA expr)*)? CLOSE_BRACKET                    #RhsArrLit
-         | CALL ident OPEN_PARENTHESES (expr (COMMA expr)*)? CLOSE_PARENTHESES #RhsCall
-         | expr                                                                #RhsExpr
-         | NEWPAIR OPEN_PARENTHESES expr COMMA expr CLOSE_PARENTHESES          #RhsNewpair
-         | pairFst                                                             #RhsPairFst
-         | pairSnd                                                             #RhsPairSnd
+assignRhs: arrayLiter
+         | call
+         | expr
+         | newpair
+         | pairFst
+         | pairSnd
          ;
+arrayLiter: OPEN_BRACKET (expr (COMMA expr)*)? CLOSE_BRACKET ;
+call: CALL ident OPEN_PARENTHESES (expr (COMMA expr)*)? CLOSE_PARENTHESES ;
+newpair: NEWPAIR OPEN_PARENTHESES expr COMMA expr CLOSE_PARENTHESES ;
+
 
 //Expressions:
-expr: (ADD|NEG)? INT_LITER                    #ExprIntLit
-    | BOOL_LITER                              #ExprBoolLit
+expr: BOOL_LITER                              #ExprBoolLit
     | CHAR_LITER                              #ExprCharLit
-    | STR_LITER                               #ExprStrlit
+    | (ADD|NEG)? INT_LITER                    #ExprIntLit
+    | STR_LITER                               #ExprStrLit
     | PAIR_LITER                              #ExprPairLit
     | arrayElem                               #ExprArrElem
     | ident                                   #ExprIdent

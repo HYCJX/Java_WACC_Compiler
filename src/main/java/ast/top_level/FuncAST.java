@@ -35,6 +35,16 @@ public final class FuncAST implements AST {
     this.symbolTable = symbolTable;
   }
 
+  public FuncAST(
+      Type returnType,
+      IdentifierLeaf functionName,
+      List<FuncParam> inputParams,
+      List<StatAST> statements,
+      int line,
+      int charPosition) {
+    this(returnType, functionName, inputParams, statements, line, charPosition, null);
+  }
+
   public Type getReturnType() {
     return returnType;
   }

@@ -2,23 +2,15 @@ package types;
 
 import static types.TypeToken.STRING;
 
-public final class StringType implements Type {
+public final class StringType extends BaseType {
 
-  public StringType() {}
-
-  @Override
-  public TypeToken getTypeToken() {
-    return STRING;
+  public StringType() {
+    super(STRING);
   }
 
   @Override
   public int getOffset() {
     return 4;
-  }
-
-  @Override
-  public String print() {
-    return String.valueOf(TypeToken.STRING);
   }
 
   @Override

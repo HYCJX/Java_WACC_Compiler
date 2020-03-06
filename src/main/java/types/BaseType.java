@@ -1,6 +1,6 @@
 package types;
 
-/* Abstraction of types: Any, Bool, Char, Int and Null */
+/* Abstraction of types: Any, Bool, Char, Int, Null and String */
 
 public abstract class BaseType implements Type {
 
