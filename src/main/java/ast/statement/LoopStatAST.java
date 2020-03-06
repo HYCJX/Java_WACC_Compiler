@@ -9,12 +9,16 @@ public final class LoopStatAST implements StatAST {
 
   private final ExprAST condition;
   private final List<StatAST> statements;
-  private final SymbolTable symbolTable;
+  private SymbolTable symbolTable;
 
   public LoopStatAST(ExprAST condition, List<StatAST> statements, SymbolTable symbolTable) {
     this.condition = condition;
     this.statements = statements;
     this.symbolTable = symbolTable;
+  }
+
+  public LoopStatAST(ExprAST condition, List<StatAST> statements) {
+    this(condition, statements, null);
   }
 
   public ExprAST getCondition() {
@@ -27,6 +31,13 @@ public final class LoopStatAST implements StatAST {
 
   public SymbolTable getSymbolTable() {
     return symbolTable;
+  }
+
+  public void setSymbolTable(SymbolTable symbolTable) {
+    if (this.symbolTable != null) {
+      throw new RuntimeException("Symbol table is set more than once.");
+    }
+    this.symbolTable = symbolTable;
   }
 
   @Override

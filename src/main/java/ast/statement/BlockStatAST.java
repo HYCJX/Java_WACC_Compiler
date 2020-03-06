@@ -7,11 +7,15 @@ import java.util.List;
 public final class BlockStatAST implements StatAST {
 
   private final List<StatAST> statements;
-  private final SymbolTable symbolTable;
+  private SymbolTable symbolTable;
 
   public BlockStatAST(List<StatAST> statements, SymbolTable symbolTable) {
     this.statements = statements;
     this.symbolTable = symbolTable;
+  }
+
+  public BlockStatAST(List<StatAST> statements) {
+    this(statements, null);
   }
 
   public List<StatAST> getStatements() {
@@ -20,6 +24,13 @@ public final class BlockStatAST implements StatAST {
 
   public SymbolTable getSymbolTable() {
     return symbolTable;
+  }
+
+  public void setSymbolTable(SymbolTable symbolTable) {
+    if (this.symbolTable != null) {
+      throw new RuntimeException("Symbol table is set more than once.");
+    }
+    this.symbolTable = symbolTable;
   }
 
   @Override

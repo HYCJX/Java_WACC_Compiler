@@ -10,5 +10,6 @@ public enum StatToken {
   LOOP,
   NORMAL,
   READ,
-  SKIP
+  SKIP,
+  COMPOSITION // Only in construction
 }

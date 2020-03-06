@@ -4,19 +4,22 @@ import ast.AST;
 import ast.statement.StatAST;
 import symbol_table.SymbolTable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class ProgAST implements AST {
 
-  private final List<FuncAST> functions = new ArrayList<>();
+  private final List<FuncAST> functions;
   private final List<StatAST> statements;
-  private final SymbolTable symbolTable;
+  private SymbolTable symbolTable;
 
   public ProgAST(List<FuncAST> functions, List<StatAST> statements, SymbolTable symbolTable) {
-    this.functions.addAll(functions);
+    this.functions = functions;
     this.statements = statements;
     this.symbolTable = symbolTable;
+  }
+
+  public ProgAST(List<FuncAST> functions, List<StatAST> statements) {
+    this(functions, statements, null);
   }
 
   public List<StatAST> getStatement() {
@@ -29,6 +32,13 @@ public final class ProgAST implements AST {
 
   public SymbolTable getSymbolTable() {
     return symbolTable;
+  }
+
+  public void setSymbolTable(SymbolTable symbolTable) {
+    if (this.symbolTable != null) {
+      throw new RuntimeException("Symbol table is set more than once.");
+    }
+    this.symbolTable = symbolTable;
   }
 
   public boolean hasFunction() {
