@@ -18,86 +18,53 @@ func: type ident OPEN_PARENTHESES (param (COMMA param)*)? CLOSE_PARENTHESES IS s
 param: type ident ;
 
 //Statements:
-stat: statSkip
-    | statInitVar
-    | statAssignVar
-    | statRead
-    | statFree
-    | statReturn
-    | statExit
-    | statPrint
-    | statPrintln
-    | statCond
-    | statLoop
-    | statBegin
-    | stat SEMICOLON stat
+stat: SKIPS                          #StatSkip
+    | assignLhs ASSIGN assignRhs     #StatAssignVar
+    | type ident ASSIGN assignRhs    #StatInitVar
+    | EXIT expr                      #StatExit
+    | FREE expr                      #StatFree
+    | PRINT expr                     #StatPrint
+    | PRINTLN expr                   #StatPrintln
+    | RETURN expr                    #StatReturn
+    | READ assignLhs                 #StatRead
+    | BEGIN stat END                 #StatBegin
+    | IF expr THEN stat ELSE stat FI #StatCond
+    | WHILE expr DO stat DONE        #StatLoop
+    | stat SEMICOLON stat            #StatCompose
     ;
 
-//Statement Helpers:
-statSkip: SKIPS ;
-statInitVar: type ident ASSIGN assignRhs ;
-statAssignVar: assignLhs ASSIGN assignRhs ;
-statRead: READ assignLhs ;
-statFree: FREE expr ;
-statReturn: RETURN expr ;
-statExit: EXIT expr ;
-statPrint: PRINT expr ;
-statPrintln: PRINTLN expr ;
-statCond: IF expr THEN stat ELSE stat FI ;
-statLoop: WHILE expr DO stat DONE ;
-statBegin: BEGIN stat END ;
-
 //Assign LHS:
-assignLhs: ident
-         | arrayElem
-         | pairElem
+assignLhs: ident     #LhsIdent
+         | arrayElem #LhsArrElem
+         | pairFst   #LhsPairFst
+         | pairSnd   #LhsPairSnd
          ;
 
 //Assign RHS:
-assignRhs: arrayLiter
-         | pairElem
-         | call
-         | expr
-         | newpair
+assignRhs: OPEN_BRACKET (expr (COMMA expr)*)? CLOSE_BRACKET                    #RhsArrLit
+         | CALL ident OPEN_PARENTHESES (expr (COMMA expr)*)? CLOSE_PARENTHESES #RhsCall
+         | expr                                                                #RhsExpr
+         | NEWPAIR OPEN_PARENTHESES expr COMMA expr CLOSE_PARENTHESES          #RhsNewpair
+         | pairFst                                                             #RhsPairFst
+         | pairSnd                                                             #RhsPairSnd
          ;
 
-//AssignRhs Helpers:
-call: CALL ident OPEN_PARENTHESES (expr (COMMA expr)*)? CLOSE_PARENTHESES ;
-newpair: NEWPAIR OPEN_PARENTHESES expr COMMA expr CLOSE_PARENTHESES ;
-
-//Pair elements:
-pairElem: pairElemFst
-        | pairElemSnd
-        ;
-pairElemFst: FST expr ;
-pairElemSnd: SND expr ;
-
-
 //Expressions:
-expr: exprIntLit
-    | exprBoolLit
-    | exprCharLit
-    | exprStrLit
-    | exprPairLit
-    | ident
-    | arrayElem
-    | exprParen
-    | exprUnop
-    | expr MULDIVMOD expr
-    | expr (ADD|NEG) expr
-    | expr CMP expr
-    | expr EQ expr
-    | expr ANDOR expr
+expr: (ADD|NEG)? INT_LITER                    #ExprIntLit
+    | BOOL_LITER                              #ExprBoolLit
+    | CHAR_LITER                              #ExprCharLit
+    | STR_LITER                               #ExprStrlit
+    | PAIR_LITER                              #ExprPairLit
+    | arrayElem                               #ExprArrElem
+    | ident                                   #ExprIdent
+    | OPEN_PARENTHESES expr CLOSE_PARENTHESES #ExprParen
+    | (NOT|NEG|LENGTH|ORD|CHR) expr           #ExprUnaryOp
+    | expr MULDIVMOD expr                     #ExprMulDivMod
+    | expr (ADD|NEG) expr                     #ExprAddSub
+    | expr CMP expr                           #ExprCmp
+    | expr EQ expr                            #ExprEq
+    | expr ANDOR expr                         #ExprAndOr
     ;
-
-//Expression Helpers:
-exprIntLit: intLiter ;
-exprBoolLit: BOOL_LITER ;
-exprCharLit: CHAR_LITER ;
-exprStrLit: STR_LITER ;
-exprPairLit: PAIR_LITER ;
-exprParen: OPEN_PARENTHESES expr CLOSE_PARENTHESES ;
-exprUnop: (NOT|NEG|LENGTH|ORD|CHR) expr ;
 
 //Type:
 type: baseType
@@ -108,25 +75,24 @@ type: baseType
 //Base Type:
 baseType: BASE_TYPE ;
 
-//Pair type:
-pairType: PAIR OPEN_PARENTHESES pairElemType COMMA pairElemType CLOSE_PARENTHESES ;
-pairElemType: PAIR|baseType|arrayType ;
-
 //Array type:
 arrayType: baseType OPEN_BRACKET CLOSE_BRACKET
          | arrayType  OPEN_BRACKET CLOSE_BRACKET
          | pairType OPEN_BRACKET CLOSE_BRACKET
          ;
 
+//Pair type:
+pairType: PAIR OPEN_PARENTHESES pairElemType COMMA pairElemType CLOSE_PARENTHESES ;
+pairElemType: PAIR|baseType|arrayType ;
+
 //Array element:
 arrayElem: ident (OPEN_BRACKET expr CLOSE_BRACKET)+ ;
 
-//Int literal:
-intLiter: (ADD|NEG)? INT_LITER ;
-
-//Array literal:
-arrayLiter: OPEN_BRACKET (expr (COMMA expr)*)? CLOSE_BRACKET ;
-
+//Identifier:
 ident: IDENT ;
+
+//Pair element:
+pairFst: FST expr;
+pairSnd: SND expr;
 
 // EOF indicates that the program must consume to the end of the input.
