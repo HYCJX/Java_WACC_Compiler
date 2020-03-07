@@ -5,7 +5,7 @@ public enum NormalStatToken {
   RETURN,
   EXIT,
   PRINT,
-  PRINTLINE;
+  PRINTLN;
 
   @Override
   public String toString() {

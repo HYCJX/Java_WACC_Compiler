@@ -17,7 +17,6 @@ import ast.top_level.FuncParam;
 import ast.top_level.ProgAST;
 import errors_exceptions.error_handler.ErrorHandler;
 import errors_exceptions.syntax_error.BadFormatError;
-import errors_exceptions.syntax_error.BranchNoReturnError;
 import errors_exceptions.syntax_error.MismatchedReturnError;
 import parser.WaccParser;
 import parser.WaccParserBaseVisitor;
@@ -29,7 +28,7 @@ import java.util.List;
 public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
 
   private final ErrorHandler errorHandler;
-  private boolean needReturn = false;
+  private boolean needReturn = false; // Check function return.
 
   public Syntax_BuildAST_Visitor(ErrorHandler errorHandler) {
     this.errorHandler = errorHandler;
@@ -40,7 +39,8 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
     // Visit functions:
     List<FuncAST> functions = new ArrayList<>();
     for (WaccParser.FuncContext funcContext : ctx.func()) {
-      needReturn = true;
+      // Each function needs a return value:
+      this.needReturn = true;
       FuncAST funcAST = visitFunc(funcContext);
       if (needReturn) {
         errorHandler.addError(
@@ -58,9 +58,11 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
 
   @Override
   public FuncAST visitFunc(WaccParser.FuncContext ctx) {
-    // Build AST:
+    // Visit return type:
     Type returnType = visitType(ctx.type());
+    // Visit function name:
     IdentifierLeaf functionName = visitIdent(ctx.ident());
+    // Visit parameters:
     List<FuncParam> inputParams = new ArrayList<>();
     for (WaccParser.ParamContext paramContext : ctx.param()) {
       Type type = visitType(paramContext.type());
@@ -70,7 +72,6 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
     // Visit statement:
     StatAST statAST = visitStat(ctx.stat());
     List<StatAST> statements = extractList(statAST);
-    // Set return type field back to null:
     return new FuncAST(
         returnType,
         functionName,
@@ -80,6 +81,7 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
         ctx.getStart().getCharPositionInLine());
   }
 
+  // A helper function that does the casting for statements:
   private StatAST visitStat(WaccParser.StatContext ctx) {
     return (StatAST) visit(ctx);
   }
@@ -125,7 +127,7 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
   @Override
   public NormalStatAST visitStatPrintln(WaccParser.StatPrintlnContext ctx) {
     ExprAST expression = visitExpr(ctx.expr());
-    return new NormalStatAST(NormalStatToken.PRINTLINE, expression);
+    return new NormalStatAST(NormalStatToken.PRINTLN, expression);
   }
 
   @Override
@@ -150,21 +152,25 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
 
   @Override
   public ConditionStatAST visitStatCond(WaccParser.StatCondContext ctx) {
+    // Visit condition expression:
     ExprAST expression = visitExpr(ctx.expr());
-    needReturn = true;
+    // Record return status:
+    boolean check_one = this.needReturn;
+    // Visit true branch:
     StatAST trueStatements = visitStat(ctx.stat(0));
-    if (needReturn) {
-      errorHandler.addError(
-          new BranchNoReturnError(
-              "if", ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine()));
+    // Record return status:
+    boolean check_two = this.needReturn;
+    // Set return status to be true if it was true when the visitor enters this node:
+    if (check_one) {
+      this.needReturn = true;
     }
-    needReturn = true;
+    // Visit false branch:
     StatAST falseStatements = visitStat(ctx.stat(1));
-    if (needReturn) {
-      errorHandler.addError(
-          new BranchNoReturnError(
-              "if", ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine()));
+    // Set return status to be false only if both branches return:
+    if (check_one || check_two) {
+      needReturn = true;
     }
+    // Construct ast node:
     List<StatAST> trueBranch = extractList(trueStatements);
     List<StatAST> falseBranch = extractList(falseStatements);
     return new ConditionStatAST(expression, trueBranch, falseBranch);
@@ -178,6 +184,7 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
     return new LoopStatAST(condition, statements);
   }
 
+  // An intermediate structure to store lists of statements:
   @Override
   public CompositionStatAST visitStatCompose(WaccParser.StatComposeContext ctx) {
     StatAST first = visitStat(ctx.stat(0));
@@ -234,6 +241,7 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
         first, second, ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
   }
 
+  // A helper function that does the casting for expressions:
   private ExprAST visitExpr(WaccParser.ExprContext ctx) {
     return (ExprAST) visit(ctx);
   }
@@ -252,6 +260,7 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
   @Override
   public CharlitExprLeaf visitExprCharLit(WaccParser.ExprCharLitContext ctx) {
     String string = ctx.CHAR_LITER().getText();
+    // Correct representation of escape sequences:
     string = string.replaceAll("\\\\0", "\0");
     string = string.replaceAll("\\\\b", "\b");
     string = string.replaceAll("\\\\t", "\t");
@@ -267,18 +276,20 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
 
   @Override
   public IntlitExprLeaf visitExprIntLit(WaccParser.ExprIntLitContext ctx) {
+    String text = (ctx.NEG() != null ? "-" : "") + ctx.INT_LITER().getText();
+    // Handle integer overflow in compile time:
     try {
-      Integer.parseInt(ctx.INT_LITER().getText());
+      Integer.parseInt(text);
     } catch (NumberFormatException e) {
       errorHandler.addError(
           new BadFormatError(
-              ctx.INT_LITER().getText(),
+              text,
               ctx.getStart().getLine(),
               ctx.getStart().getCharPositionInLine()));
       return null;
     }
     return new IntlitExprLeaf(
-        Integer.parseInt(ctx.INT_LITER().getText()),
+        Integer.parseInt(text),
         ctx.getStart().getLine(),
         ctx.getStart().getCharPositionInLine());
   }
@@ -336,6 +347,107 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
           ctx.getStart().getCharPositionInLine());
     }
     return null;
+  }
+
+  @Override
+  public BinopExprAST visitExprMulDivMod(WaccParser.ExprMulDivModContext ctx) {
+    ExprAST left = visitExpr(ctx.expr(0));
+    ExprAST right = visitExpr(ctx.expr(1));
+    BinopToken binopToken;
+    switch (ctx.MULDIVMOD().getText()) {
+      case "*":
+        binopToken = BinopToken.MUL;
+        break;
+      case "/":
+        binopToken = BinopToken.DIV;
+        break;
+      case "%":
+        binopToken = BinopToken.MOD;
+        break;
+      default:
+        throw new RuntimeException("Shouldn't be reached.");
+    }
+    return new BinopExprAST(
+        binopToken, left, right, ctx.getStop().getLine(), ctx.getStop().getCharPositionInLine());
+  }
+
+  @Override
+  public BinopExprAST visitExprAddSub(WaccParser.ExprAddSubContext ctx) {
+    ExprAST left = visitExpr(ctx.expr(0));
+    ExprAST right = visitExpr(ctx.expr(1));
+    BinopToken binopToken;
+    if (ctx.ADD() != null) {
+      binopToken = BinopToken.ADD;
+    } else if (ctx.NEG() != null) {
+      binopToken = BinopToken.SUB;
+    } else {
+      throw new RuntimeException("Shouldn't be reached.");
+    }
+    return new BinopExprAST(
+        binopToken, left, right, ctx.getStop().getLine(), ctx.getStop().getCharPositionInLine());
+  }
+
+  @Override
+  public BinopExprAST visitExprCmp(WaccParser.ExprCmpContext ctx) {
+    ExprAST left = visitExpr(ctx.expr(0));
+    ExprAST right = visitExpr(ctx.expr(1));
+    BinopToken binopToken;
+    switch (ctx.CMP().getText()) {
+      case ">":
+        binopToken = BinopToken.GT;
+        break;
+      case "<":
+        binopToken = BinopToken.LT;
+        break;
+      case ">=":
+        binopToken = BinopToken.GTE;
+        break;
+      case "<=":
+        binopToken = BinopToken.LTE;
+        break;
+      default:
+        throw new RuntimeException("Shouldn't be reached.");
+    }
+    return new BinopExprAST(
+        binopToken, left, right, ctx.getStop().getLine(), ctx.getStop().getCharPositionInLine());
+  }
+
+  @Override
+  public BinopExprAST visitExprEq(WaccParser.ExprEqContext ctx) {
+    ExprAST left = visitExpr(ctx.expr(0));
+    ExprAST right = visitExpr(ctx.expr(1));
+    BinopToken binopToken;
+    switch (ctx.EQ().getText()) {
+      case "==":
+        binopToken = BinopToken.EQ;
+        break;
+      case "!=":
+        binopToken = BinopToken.NEQ;
+        break;
+      default:
+        throw new RuntimeException("Shouldn't be reached.");
+    }
+    return new BinopExprAST(
+        binopToken, left, right, ctx.getStop().getLine(), ctx.getStop().getCharPositionInLine());
+  }
+
+  @Override
+  public BinopExprAST visitExprAndOr(WaccParser.ExprAndOrContext ctx) {
+    ExprAST left = visitExpr(ctx.expr(0));
+    ExprAST right = visitExpr(ctx.expr(1));
+    BinopToken binopToken;
+    switch (ctx.ANDOR().getText()) {
+      case "&&":
+        binopToken = BinopToken.AND;
+        break;
+      case "||":
+        binopToken = BinopToken.OR;
+        break;
+      default:
+        throw new RuntimeException("Shouldn't be reached.");
+    }
+    return new BinopExprAST(
+        binopToken, left, right, ctx.getStop().getLine(), ctx.getStop().getCharPositionInLine());
   }
 
   @Override
@@ -443,6 +555,7 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
     return new PairType(first, second);
   }
 
+  // A helper function to extract statement AST into list of statement ASTs:
   private List<StatAST> extractList(StatAST statAST) {
     if (statAST.getStatToken() == StatToken.COMPOSITION) {
       return ((CompositionStatAST) statAST).getStatements();

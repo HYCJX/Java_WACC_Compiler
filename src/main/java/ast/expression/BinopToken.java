@@ -7,7 +7,7 @@ public enum BinopToken {
       return "*";
     }
   },
-  Div {
+  DIV {
     @Override
     public String toString() {
       return "/";
