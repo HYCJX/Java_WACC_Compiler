@@ -13,7 +13,7 @@ import ast.mixed.ArrayElemAST;
 import ast.mixed.IdentifierLeaf;
 import ast.statement.*;
 import ast.top_level.FuncAST;
-import ast.top_level.FuncParam;
+import ast.top_level.FuncParamAST;
 import ast.top_level.ProgAST;
 import errors_exceptions.error_handler.ErrorHandler;
 import errors_exceptions.syntax_error.BadFormatError;
@@ -63,11 +63,9 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
     // Visit function name:
     IdentifierLeaf functionName = visitIdent(ctx.ident());
     // Visit parameters:
-    List<FuncParam> inputParams = new ArrayList<>();
+    List<FuncParamAST> inputParams = new ArrayList<>();
     for (WaccParser.ParamContext paramContext : ctx.param()) {
-      Type type = visitType(paramContext.type());
-      IdentifierLeaf id = visitIdent(paramContext.ident());
-      inputParams.add(new FuncParam(type, id));
+      inputParams.add(visitParam(paramContext));
     }
     // Visit statement:
     StatAST statAST = visitStat(ctx.stat());
@@ -79,6 +77,13 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
         statements,
         ctx.getStart().getLine(),
         ctx.getStart().getCharPositionInLine());
+  }
+
+  @Override
+  public FuncParamAST visitParam(WaccParser.ParamContext ctx) {
+    Type type = visitType(ctx.type());
+    IdentifierLeaf identifier = visitIdent(ctx.ident());
+    return new FuncParamAST(type, identifier);
   }
 
   // A helper function that does the casting for statements:
@@ -283,15 +288,11 @@ public class Syntax_BuildAST_Visitor extends WaccParserBaseVisitor<AST> {
     } catch (NumberFormatException e) {
       errorHandler.addError(
           new BadFormatError(
-              text,
-              ctx.getStart().getLine(),
-              ctx.getStart().getCharPositionInLine()));
+              text, ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine()));
       return null;
     }
     return new IntlitExprLeaf(
-        Integer.parseInt(text),
-        ctx.getStart().getLine(),
-        ctx.getStart().getCharPositionInLine());
+        Integer.parseInt(text), ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
   }
 
   @Override

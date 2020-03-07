@@ -12,7 +12,7 @@ public final class FuncAST implements AST {
 
   private final Type returnType;
   private final IdentifierLeaf functionName;
-  private final List<FuncParam> inputParams;
+  private final List<FuncParamAST> inputParams;
   private final List<StatAST> statements;
   private final int line;
   private final int charPosition;
@@ -21,7 +21,7 @@ public final class FuncAST implements AST {
   public FuncAST(
       Type returnType,
       IdentifierLeaf functionName,
-      List<FuncParam> inputParams,
+      List<FuncParamAST> inputParams,
       List<StatAST> statements,
       int line,
       int charPosition,
@@ -38,7 +38,7 @@ public final class FuncAST implements AST {
   public FuncAST(
       Type returnType,
       IdentifierLeaf functionName,
-      List<FuncParam> inputParams,
+      List<FuncParamAST> inputParams,
       List<StatAST> statements,
       int line,
       int charPosition) {
@@ -53,7 +53,7 @@ public final class FuncAST implements AST {
     return functionName;
   }
 
-  public List<FuncParam> getInputParams() {
+  public List<FuncParamAST> getInputParams() {
     return inputParams;
   }
 
@@ -85,12 +85,10 @@ public final class FuncAST implements AST {
     StringBuilder builder = new StringBuilder();
     builder.append(returnType.print()).append(" ").append(functionName.print()).append("(");
     String prefix = "";
-    for (FuncParam param : inputParams) {
+    for (FuncParamAST param : inputParams) {
       builder.append(prefix);
       prefix = ",";
-      builder.append(param.getType().print());
-      builder.append(" ");
-      builder.append(param.getIdentifier().print());
+      builder.append(param.print());
     }
     builder.append(")\n{");
     prefix = "";
